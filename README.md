@@ -44,13 +44,13 @@ It uses **MobileNetV2** to generate image embeddings and compares them using **c
 
 ## ⚙️ **Installation and Setup**
 
-### 🧠 Backend Setup (FastAPI)
+🧠 Backend Setup (FastAPI)
 ```bash
 cd backend
 pip install -r requirements.txt
 uvicorn main:app --reload --port 5000
 
-🌐 Frontend Setup (React)
+###  🌐 Frontend Setup (React) 
 cd frontend
 npm install
 npm run dev
