@@ -236,7 +236,7 @@ function Home() {
       <footer className="mt-20  text-center text-gray-400 text-sm">
         <div className="flex justify-center gap-6 mb-2">
           <a
-            href="https://github.com/Satyam216"
+            href="https://github.com/Satyam216/visuals-product-matcher"
             target="_blank"
             rel="noopener noreferrer"
             className="hover:text-white transition"
