@@ -25,8 +25,8 @@ for p in all_products:
             {"$set": {"embedding": emb.tolist()}}
         )
 
-        print(f"✅ Updated {p['name']}")
+        print(f"Updated {p['name']}")
     except Exception as e:
-        print(f"❌ Failed {p['name']}: {e}")
+        print(f"Failed {p['name']}: {e}")
 
-print("🎉 All product embeddings updated successfully!")
+print("All product embeddings updated successfully!")

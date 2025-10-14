@@ -38,7 +38,7 @@ def signup(user: UserSignup):
     })
     return {"message": "User registered successfully!"}
 
-# ✅ Login Route
+#Login Route
 @router.post("/login")
 def login(user: UserLogin):
     existing = users.find_one({"email": user.email})
@@ -57,14 +57,14 @@ def login(user: UserLogin):
 
     return {"message": "Login successful", "token": token}
 
-# /auth/verify-email
+#/auth/verify-email
 @router.post("/verify-email")
 async def verify_email(data: dict):
     user = users.find_one({"email": data["email"]})
     return {"exists": bool(user)}
 
 
-# /auth/reset-password
+#/auth/reset-password
 @router.post("/reset-password")
 async def reset_password(data: dict):
     email = data.get("email")

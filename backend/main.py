@@ -19,16 +19,13 @@ import time
 from db import products, users
 from model import get_embedding
 
-# ============================================================
-# 🌍 Setup
-# ============================================================
-
 load_dotenv()
 app = FastAPI(title="Visual Product Matcher API")
 
 origins = [
     "http://localhost:5173",
-    "http://127.0.0.1:5173",
+    "http://127.0.0.1:5173"
+    "https://visuals-product-matcher.vercel.app/",
 ]
 
 app.add_middleware(
@@ -39,16 +36,8 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# ============================================================
-# 🔐 Authentication Config
-# ============================================================
-
 SECRET_KEY = os.getenv("JWT_SECRET", "supersecretkey")
 ALGORITHM = "HS256"
-
-# ============================================================
-# 🧩 Models
-# ============================================================
 
 class UserSignup(BaseModel):
     name: str
@@ -66,9 +55,6 @@ class ResetPassword(BaseModel):
     email: EmailStr
     newPassword: str
 
-# ============================================================
-# 🧩 Authentication Routes
-# ============================================================
 
 @app.post("/auth/signup", tags=["Authentication"])
 def signup(user: UserSignup):
@@ -104,10 +90,7 @@ def login(user: UserLogin):
     token = jwt.encode(payload, SECRET_KEY, algorithm=ALGORITHM)
     return {"message": "Login successful", "token": token}
 
-# ============================================================
-# 🔑 Forgot Password + Verify Email Routes (NEW)
-# ============================================================
-
+#Forgot Password + Verify Email Routes (NEW)
 @app.post("/auth/verify-email", tags=["Authentication"])
 def verify_email(data: VerifyEmail):
     """
@@ -133,10 +116,7 @@ def reset_password(data: ResetPassword):
     )
     return {"message": "Password updated successfully"}
 
-# ============================================================
-# 🔒 JWT Middleware (Global)
-# ============================================================
-
+#JWT Middleware (Global)
 @app.middleware("http")
 async def jwt_middleware(request: Request, call_next):
     public_paths = ["/", "/docs", "/openapi.json", "/auth/login", "/auth/signup", "/auth/verify-email", "/auth/reset-password"]
@@ -155,19 +135,16 @@ async def jwt_middleware(request: Request, call_next):
 
     return await call_next(request)
 
-# ============================================================
-# 🧠 Visual Product Matching Route (File or URL)
-# ============================================================
-
+#Visual Product Matching Route (File or URL)
 @app.post("/upload", tags=["Product Matching"])
 async def upload_image(file: UploadFile = None, image_url: str = Form(None)):
     try:
         img_bytes = None
         if file:
             img_bytes = await file.read()
-            print("📂 File upload received.")
+            print("File upload received.")
         elif image_url:
-            print(f"🌐 Fetching image from URL: {image_url}")
+            print(f"Fetching image from URL: {image_url}")
             headers = {
                 "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)",
                 "Accept": "image/*,*/*;q=0.8"
@@ -179,12 +156,12 @@ async def upload_image(file: UploadFile = None, image_url: str = Form(None)):
                     response = requests.get(image_url, headers=headers, timeout=10, verify=False)
                     if response.status_code in [200, 302] and "image" in response.headers.get("Content-Type", ""):
                         img_bytes = response.content
-                        print(f"✅ Image fetched successfully (attempt {attempt + 1})")
+                        print(f"Image fetched successfully (attempt {attempt + 1})")
                         break
-                    print(f"⚠️ Attempt {attempt + 1} failed: {response.status_code}")
+                    print(f"Attempt {attempt + 1} failed: {response.status_code}")
                     time.sleep(1)
                 except Exception as e:
-                    print(f"⚠️ Attempt {attempt + 1} error: {e}")
+                    print(f"Attempt {attempt + 1} error: {e}")
                     time.sleep(1)
             if img_bytes is None:
                 raise HTTPException(status_code=400, detail="Failed to fetch image from provided URL.")
@@ -223,7 +200,7 @@ async def upload_image(file: UploadFile = None, image_url: str = Form(None)):
                 "similarity": round(float(sims[i]) * 100, 2)
             })
 
-        print(f"✅ Returned {len(results)} matches")
+        print(f"Returned {len(results)} matches")
         return {"matches": results}
 
     except HTTPException:
@@ -232,10 +209,6 @@ async def upload_image(file: UploadFile = None, image_url: str = Form(None)):
         print("🔥 [ERROR] Upload failed:", str(e))
         raise HTTPException(status_code=500, detail=str(e))
 
-# ============================================================
-# 🏠 Root Route
-# ============================================================
-
 @app.get("/", tags=["Root"])
 def home():
-    return {"message": "🚀 Visual Product Matcher API with Authentication is running!"}
+    return {"message": "Visual Product Matcher API with Authentication is running!"}
