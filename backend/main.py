@@ -27,14 +27,13 @@ load_dotenv()
 app = FastAPI(title="Visual Product Matcher API")
 
 origins = [
-    "http://localhost:5173",  # your frontend
-    "http://127.0.0.1:5173",  # sometimes frontend runs on this
+    "http://localhost:5173",
+    "http://127.0.0.1:5173",
 ]
 
-# ✅ CORS middleware
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # change to your frontend URL in production
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -59,6 +58,13 @@ class UserSignup(BaseModel):
 class UserLogin(BaseModel):
     email: EmailStr
     password: str
+
+class VerifyEmail(BaseModel):
+    email: EmailStr
+
+class ResetPassword(BaseModel):
+    email: EmailStr
+    newPassword: str
 
 # ============================================================
 # 🧩 Authentication Routes
@@ -99,16 +105,41 @@ def login(user: UserLogin):
     return {"message": "Login successful", "token": token}
 
 # ============================================================
+# 🔑 Forgot Password + Verify Email Routes (NEW)
+# ============================================================
+
+@app.post("/auth/verify-email", tags=["Authentication"])
+def verify_email(data: VerifyEmail):
+    """
+    Check if user exists by email.
+    """
+    existing = users.find_one({"email": data.email})
+    return {"exists": bool(existing)}
+
+
+@app.post("/auth/reset-password", tags=["Authentication"])
+def reset_password(data: ResetPassword):
+    """
+    Update password directly if user exists.
+    """
+    existing = users.find_one({"email": data.email})
+    if not existing:
+        raise HTTPException(status_code=404, detail="User not found")
+
+    hashed_pw = bcrypt.hashpw(data.newPassword.encode("utf-8"), bcrypt.gensalt())
+    users.update_one(
+        {"email": data.email},
+        {"$set": {"password": hashed_pw.decode("utf-8")}}
+    )
+    return {"message": "Password updated successfully"}
+
+# ============================================================
 # 🔒 JWT Middleware (Global)
 # ============================================================
 
 @app.middleware("http")
 async def jwt_middleware(request: Request, call_next):
-    """
-    Automatically validates JWT for all non-public routes.
-    Public routes: /, /docs, /openapi.json, /auth/*
-    """
-    public_paths = ["/", "/docs", "/openapi.json", "/auth/login", "/auth/signup"]
+    public_paths = ["/", "/docs", "/openapi.json", "/auth/login", "/auth/signup", "/auth/verify-email", "/auth/reset-password"]
     if any(request.url.path.startswith(path) for path in public_paths):
         return await call_next(request)
 
@@ -130,14 +161,8 @@ async def jwt_middleware(request: Request, call_next):
 
 @app.post("/upload", tags=["Product Matching"])
 async def upload_image(file: UploadFile = None, image_url: str = Form(None)):
-    """
-    Upload an image OR provide an image URL to find visually similar products.
-    JWT required.
-    """
     try:
         img_bytes = None
-
-        # --- Step 1️⃣: Handle file or URL input ---
         if file:
             img_bytes = await file.read()
             print("📂 File upload received.")
@@ -147,10 +172,8 @@ async def upload_image(file: UploadFile = None, image_url: str = Form(None)):
                 "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)",
                 "Accept": "image/*,*/*;q=0.8"
             }
-
             ssl._create_default_https_context = ssl._create_unverified_context
 
-            # Retry fetching image up to 3 times
             for attempt in range(3):
                 try:
                     response = requests.get(image_url, headers=headers, timeout=10, verify=False)
@@ -163,28 +186,23 @@ async def upload_image(file: UploadFile = None, image_url: str = Form(None)):
                 except Exception as e:
                     print(f"⚠️ Attempt {attempt + 1} error: {e}")
                     time.sleep(1)
-
             if img_bytes is None:
                 raise HTTPException(status_code=400, detail="Failed to fetch image from provided URL.")
         else:
             raise HTTPException(status_code=400, detail="No image file or image URL provided.")
 
-        # --- Step 2️⃣: Validate image format ---
         try:
             image = Image.open(io.BytesIO(img_bytes)).convert("RGB")
         except UnidentifiedImageError:
             raise HTTPException(status_code=400, detail="Invalid image format or unreadable file.")
 
-        # Convert back to bytes for embedding
         buf = io.BytesIO()
         image.save(buf, format="JPEG")
         final_img_bytes = buf.getvalue()
 
-        # --- Step 3️⃣: Generate embedding ---
         uploaded_emb = np.array(get_embedding(final_img_bytes))
         uploaded_emb = uploaded_emb / norm(uploaded_emb)
 
-        # --- Step 4️⃣: Compare with MongoDB product embeddings ---
         all_products = list(products.find({}, {"_id": 0}))
         if not all_products:
             raise HTTPException(status_code=404, detail="No products in database")

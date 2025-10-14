@@ -3,7 +3,6 @@ import { Toaster } from "react-hot-toast";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
-import Landing from "./pages/Landing";
 
 function App() {
   const token = localStorage.getItem("token");
@@ -13,7 +12,7 @@ function App() {
       <Router>
         <Routes>
           {/* ✅ If logged in, go to Home; otherwise show Landing */}
-          <Route path="/" element={token ? <Home /> : <Landing />} />
+          <Route path="/" element={<Home/>}/>
 
           {/* ✅ Auth Routes */}
           <Route path="/login" element={<Login />} />
@@ -25,7 +24,51 @@ function App() {
       </Router>
 
       {/* ✅ Toast notifications — available globally */}
-      <Toaster position="top-right" reverseOrder={false} />
+      <Toaster
+        position="top-right"
+        toastOptions={{
+          duration: 2500,
+          style: {
+            background: "#111",
+            color: "#fff",
+            border: "1px solid #2e2e2e",
+            borderRadius: "12px",
+            fontSize: "15px",
+            padding: "12px 18px",
+            boxShadow: "0 4px 20px rgba(0,0,0,0.3)",
+          },
+          success: {
+            iconTheme: {
+              primary: "#22c55e", // green
+              secondary: "#111",
+            },
+            style: {
+              background: "linear-gradient(135deg, #0f0f0f, #1a1a1a)",
+              border: "1px solid #22c55e40",
+            },
+          },
+          error: {
+            iconTheme: {
+              primary: "#ef4444", // red
+              secondary: "#111",
+            },
+            style: {
+              background: "linear-gradient(135deg, #0f0f0f, #1a1a1a)",
+              border: "1px solid #ef444440",
+            },
+          },
+          loading: {
+            iconTheme: {
+              primary: "#3b82f6", // blue
+              secondary: "#111",
+            },
+            style: {
+              background: "linear-gradient(135deg, #0f0f0f, #1a1a1a)",
+              border: "1px solid #3b82f640",
+            },
+          },
+        }}
+      />
     </>
   );
 }

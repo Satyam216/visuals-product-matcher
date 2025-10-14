@@ -56,3 +56,25 @@ def login(user: UserLogin):
     token = jwt.encode(payload, SECRET_KEY, algorithm=ALGORITHM)
 
     return {"message": "Login successful", "token": token}
+
+# /auth/verify-email
+@router.post("/verify-email")
+async def verify_email(data: dict):
+    user = users.find_one({"email": data["email"]})
+    return {"exists": bool(user)}
+
+
+# /auth/reset-password
+@router.post("/reset-password")
+async def reset_password(data: dict):
+    email = data.get("email")
+    new_password = data.get("newPassword")
+    user = users.find_one({"email": email})
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+
+    hashed_pw = bcrypt.hashpw(new_password.encode("utf-8"), bcrypt.gensalt())
+    users.update_one(
+        {"email": email}, {"$set": {"password": hashed_pw.decode("utf-8")}}
+    )
+    return {"message": "Password updated successfully"}
