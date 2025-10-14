@@ -46,7 +46,7 @@ function Signup() {
         </h2>
 
         <form onSubmit={handleSignup} className="space-y-6">
-          {/* Full Name */}
+          
           <div className="flex items-center border border-gray-700 rounded-lg px-3 py-2.5 hover:border-gray-500 transition">
             <User className="text-gray-400 w-5 h-5 mr-3" />
             <input
@@ -59,7 +59,7 @@ function Signup() {
             />
           </div>
 
-          {/* Email */}
+          
           <div className="flex items-center border border-gray-700 rounded-lg px-3 py-2.5 hover:border-gray-500 transition">
             <Mail className="text-gray-400 w-5 h-5 mr-3" />
             <input
@@ -72,7 +72,7 @@ function Signup() {
             />
           </div>
 
-          {/* Password */}
+          
           <div className="flex items-center border border-gray-700 rounded-lg px-3 py-2.5 hover:border-gray-500 transition relative">
             <Lock className="text-gray-400 w-5 h-5 mr-3" />
             <input
@@ -91,7 +91,7 @@ function Signup() {
             </div>
           </div>
 
-          {/* Confirm Password */}
+          
           <div className="flex items-center border border-gray-700 rounded-lg px-3 py-2.5 hover:border-gray-500 transition relative">
             <Lock className="text-gray-400 w-5 h-5 mr-3" />
             <input
@@ -110,7 +110,7 @@ function Signup() {
             </div>
           </div>
 
-          {/* Submit Button */}
+          
           <button
             type="submit"
             disabled={loading}
@@ -119,7 +119,7 @@ function Signup() {
             {loading ? "Creating account..." : <>SIGN UP <UserPlus size={18} /></>}
           </button>
 
-          {/* Redirect to login */}
+          
           <p className="text-xs sm:text-sm text-center mt-8 text-gray-400">
             Already have an account?{" "}
             <a href="/login" className="text-gray-200 underline hover:text-white">

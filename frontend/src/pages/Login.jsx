@@ -15,7 +15,7 @@ function Login() {
   const [resetLoading, setResetLoading] = useState(false);
   const [verified, setVerified] = useState(false);
 
-  // ---- LOGIN FUNCTION ----
+  //LOGIN FUNCTION
   const handleLogin = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -31,7 +31,7 @@ function Login() {
     }
   };
 
-  // ---- VERIFY EMAIL EXISTS ----
+  //VERIFY EMAIL EXISTS
   const handleEmailVerification = async (e) => {
     e.preventDefault();
     if (!resetEmail) return toast.error("Please enter your email");
@@ -52,7 +52,7 @@ function Login() {
     }
   };
 
-  // ---- UPDATE PASSWORD ----
+  //UPDATE PASSWORD
   const handlePasswordUpdate = async (e) => {
     e.preventDefault();
 
@@ -93,7 +93,6 @@ function Login() {
           Member Login
         </h2>
 
-        {/* --- FORGOT PASSWORD SECTION --- */}
         {forgotMode ? (
           <>
             {!verified ? (
@@ -119,7 +118,7 @@ function Login() {
                 </button>
               </form>
             ) : (
-              // STEP 2: UPDATE PASSWORD
+              
               <form onSubmit={handlePasswordUpdate} className="space-y-5">
                 <div className="flex items-center border-b border-gray-600 pb-2">
                   <Lock className="text-gray-400 w-5 h-5 mr-3" />
@@ -165,7 +164,7 @@ function Login() {
             </p>
           </>
         ) : (
-          // --- LOGIN FORM ---
+      
           <form onSubmit={handleLogin} className="space-y-6">
             <div className="flex items-center border-b border-gray-600 pb-2">
               <Mail className="text-gray-400 w-5 h-5 mr-3" />

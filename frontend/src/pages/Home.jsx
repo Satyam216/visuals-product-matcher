@@ -24,7 +24,6 @@ function Home() {
   const [filter, setFilter] = useState(0);
   const [token] = useState(localStorage.getItem("token"));
 
-  // ---- Upload Handler ----
   const handleUpload = async () => {
     if (!token) {
       toast.error("Please login first to use this feature!");
@@ -61,14 +60,14 @@ function Home() {
     }
   };
 
-  // ---- Logout ----
+  //Logout
   const handleLogout = () => {
     localStorage.removeItem("token");
     toast.success("Logged out successfully!");
     setTimeout(() => window.location.reload(), 800);
   };
 
-  // ---- File / URL Input ----
+  //File/URL Input
   const handleImageChange = (e) => {
     const selected = e.target.files[0];
     setFile(selected);
@@ -86,11 +85,9 @@ function Home() {
 
   const filteredResults = results.filter((p) => p.similarity >= filter);
 
-  // ---- UI ----
   return (
     <div className="min-h-screen flex flex-col items-center bg-gradient-to-br from-black via-[#0d0d0d] to-[#1c1c1c] text-gray-100 p-6 sm:p-10 font-sans">
       
-      {/* ---------- HEADER ---------- */}
       <div className="flex flex-col sm:flex-row justify-between items-center w-full max-w-6xl mb-12">
         <h1 className="text-5xl sm:text-4xl font-extrabold bg-gradient-to-r from-gray-300 via-white to-gray-5 00 bg-clip-text text-transparent tracking-wide drop-shadow-[0_0_25px_rgba(255,255,255,0.25)] text-center sm:text-left select-none">
           <span className="bg-gradient-to-r from-gray-80 via-white to-gray-200 bg-clip-text text-transparent animate-pulse">
@@ -123,7 +120,7 @@ function Home() {
         )}
       </div>
 
-      {/* ---------- UPLOAD SECTION ---------- */}
+      
       <div className="bg-gradient-to-b from-[#121212] to-[#0a0a0a] border border-gray-700 shadow-[0_0_25px_rgba(255,255,255,0.08)] rounded-3xl w-full max-w-2xl p-10 space-y-6 hover:shadow-[0_0_35px_rgba(255,255,255,0.15)] transition-all">
         <div
           className="border-2 border-dashed border-gray-600 rounded-2xl p-12 flex flex-col items-center justify-center hover:bg-gray-800/40 transition-all cursor-pointer"
@@ -191,7 +188,7 @@ function Home() {
         </button>
       </div>
 
-      {/* ---------- RESULTS ---------- */}
+      
       {token && results.length > 0 && (
         <div className="w-full max-w-6xl mt-12">
           <div className="flex flex-col sm:flex-row justify-between items-center mb-6">
@@ -235,7 +232,7 @@ function Home() {
         </div>
       )}
 
-      {/* ---------- FOOTER ---------- */}
+      
       <footer className="mt-20  text-center text-gray-400 text-sm">
         <div className="flex justify-center gap-6 mb-2">
           <a

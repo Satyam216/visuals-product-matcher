@@ -11,7 +11,6 @@ function ProductCard({ product }) {
                  shadow-lg hover:shadow-[0_0_15px_rgba(34,197,94,0.3)] 
                  overflow-hidden text-gray-100 transition-all duration-300"
     >
-      {/* Product Image */}
       <div className="relative w-full h-56 bg-[#181818] flex items-center justify-center">
         {product.image_url ? (
           <img
@@ -27,7 +26,6 @@ function ProductCard({ product }) {
         )}
       </div>
 
-      {/* Product Details */}
       <div className="p-4 flex flex-col gap-2">
         <h3 className="text-lg font-semibold truncate text-gray-100">
           {product.name}

@@ -11,19 +11,13 @@ function App() {
     <>
       <Router>
         <Routes>
-          {/* ✅ If logged in, go to Home; otherwise show Landing */}
           <Route path="/" element={<Home/>}/>
-
-          {/* ✅ Auth Routes */}
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
-
-          {/* ✅ Redirect all unknown paths */}
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>
       </Router>
 
-      {/* ✅ Toast notifications — available globally */}
       <Toaster
         position="top-right"
         toastOptions={{
@@ -39,7 +33,7 @@ function App() {
           },
           success: {
             iconTheme: {
-              primary: "#22c55e", // green
+              primary: "#22c55e",
               secondary: "#111",
             },
             style: {
@@ -49,7 +43,7 @@ function App() {
           },
           error: {
             iconTheme: {
-              primary: "#ef4444", // red
+              primary: "#ef4444",
               secondary: "#111",
             },
             style: {
@@ -59,7 +53,7 @@ function App() {
           },
           loading: {
             iconTheme: {
-              primary: "#3b82f6", // blue
+              primary: "#3b82f6",
               secondary: "#111",
             },
             style: {
