@@ -1,0 +1,16 @@
+fastapi
+uvicorn
+tensorflow
+pillow
+numpy
+pymongo
+cloudinary
+python-dotenv
+scikit-learn
+python-multipart
+requests
+PyJWT
+bcrypt
+email-validator
+
+
