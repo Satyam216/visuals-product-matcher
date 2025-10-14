@@ -128,7 +128,7 @@ Intuitive upload and filter interface
 
 🔗 Frontend: https://visuals-product-matcher.vercel.app/
 
-🔗 Backend API: https://visuals-product-matcher.onrender.com/
+🔗 Backend API: https://visual-products-matcher.onrender.com/
 
 
 👨‍💻 Author
@@ -147,3 +147,4 @@ Made with ❤️ by Satyam Jain
 - GitHub-ready markdown (renders clean with code, tables, and hierarchy)  
 - Clear separation between **Frontend / Backend / Database**  
 - Author section at the bottom with icons and links placeholders  
+
