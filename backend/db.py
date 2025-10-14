@@ -6,7 +6,7 @@ load_dotenv()
 
 client = MongoClient(os.getenv("MONGO_URI"))
 
-db = client["visual-product-matcher"]
+db = client["visualproductmatcher"]
 
 products = db["products"]
 users = db["users"]
