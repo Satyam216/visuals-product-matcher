@@ -26,6 +26,11 @@ from model import get_embedding
 load_dotenv()
 app = FastAPI(title="Visual Product Matcher API")
 
+origins = [
+    "http://localhost:5173",  # your frontend
+    "http://127.0.0.1:5173",  # sometimes frontend runs on this
+]
+
 # ✅ CORS middleware
 app.add_middleware(
     CORSMiddleware,
