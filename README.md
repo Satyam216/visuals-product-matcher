@@ -128,7 +128,7 @@ Intuitive upload and filter interface
 
 🔗 Frontend: https://visuals-product-matcher.vercel.app/
 
-🔗 Backend API: https://visuals-product-matcher.onrender.com/
+🔗 Backend API: https://visual-products-matcher.onrender.com/
 
 
 👨‍💻 Author
