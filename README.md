@@ -138,9 +138,6 @@ Made with ❤️ by Satyam Jain
 💻 https://github.com/Satyam216/visuals-product-matcher
 
 
-
----
-
 ### ✅ Highlights
 - Beautifully structured with proper spacing and bold hierarchy  
 - Uses emojis for readability and visual flow  
